@@ -12,7 +12,7 @@ public enum EnemyDirection
 
 public class EnemyScript : MonoBehaviour
 {
-    public float moveSpeed = 5;
+    public float moveSpeed = 0;
     public float death = -0.05f;
     public EnemyDirection thisEnemyDirection; 
 

@@ -20,7 +20,7 @@ public class SwipeResult : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (swipeControl.hasSwipedRight == true && Enemies[0] != null)
+        if (swipeControl.hasSwipedRight == true && enemyChecker.enemy == EnemyDirection.Right && Enemies[0] != null)
         {
             GameObject ToDestroy = Enemies[Enemies.Count - 1];
             Destroy(ToDestroy);
@@ -28,7 +28,7 @@ public class SwipeResult : MonoBehaviour
 
             swipeControl.hasSwipedRight = false;
 
-        } else if (swipeControl.hasSwipedLeft == true && Enemies[0] != null)
+        } else if (swipeControl.hasSwipedLeft == true && enemyChecker.enemy == EnemyDirection.Left && Enemies[0] != null)
         {
             GameObject ToDestroy = Enemies[Enemies.Count - 1];
             Destroy(ToDestroy);
@@ -36,7 +36,7 @@ public class SwipeResult : MonoBehaviour
 
             swipeControl.hasSwipedLeft = false;
 
-        } else if (swipeControl.hasSwipedUp == true && Enemies[0] != null)
+        } else if (swipeControl.hasSwipedUp == true && enemyChecker.enemy == EnemyDirection.Up && Enemies[0] != null)
         {
             GameObject ToDestroy = Enemies[Enemies.Count - 1];
             Destroy(ToDestroy);
@@ -44,7 +44,7 @@ public class SwipeResult : MonoBehaviour
 
             swipeControl.hasSwipedUp = false;
 
-        } else if (swipeControl.hasSwipedDown == true && Enemies[0] != null)
+        } else if (swipeControl.hasSwipedDown == true && enemyChecker.enemy == EnemyDirection.Down && Enemies[0] != null)
         {
             GameObject ToDestroy = Enemies[Enemies.Count - 1];
             Destroy(ToDestroy);
@@ -52,6 +52,11 @@ public class SwipeResult : MonoBehaviour
 
             swipeControl.hasSwipedDown = false;
 
+        }
+
+        if (Enemies[0] == null)
+        {
+            Enemies.RemoveAll(Enemies => !Enemies);
         }
     }
 
