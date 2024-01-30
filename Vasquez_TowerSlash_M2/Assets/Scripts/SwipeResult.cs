@@ -47,7 +47,7 @@ public class SwipeResult : MonoBehaviour
 
             swipeControl.hasSwipedLeft = false;
             gameManager.AddDashMeter();
-
+            gameManager.RandomForPowerUp();
         }
         else if (swipeControl.hasSwipedLeft == true && enemyChecker.enemy != EnemyDirection.Left && isSwiped == false)
         {
@@ -63,7 +63,7 @@ public class SwipeResult : MonoBehaviour
 
             swipeControl.hasSwipedUp = false;
             gameManager.AddDashMeter();
-
+            gameManager.RandomForPowerUp();
         }
         else if (swipeControl.hasSwipedUp == true && enemyChecker.enemy != EnemyDirection.Up && isSwiped == false)
         {
@@ -79,6 +79,7 @@ public class SwipeResult : MonoBehaviour
 
             swipeControl.hasSwipedDown = false;
             gameManager.AddDashMeter();
+            gameManager.RandomForPowerUp();
 
         }
         else if (swipeControl.hasSwipedDown == true && enemyChecker.enemy != EnemyDirection.Down && isSwiped == false)
