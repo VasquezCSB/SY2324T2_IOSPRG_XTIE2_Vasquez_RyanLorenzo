@@ -1,8 +1,8 @@
-  using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Invincibility : MonoBehaviour
+public class EnemyDetection : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -16,11 +16,13 @@ public class Invincibility : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnEnemyDetected(GameObject otherObj)
     {
-        if(collision.gameObject != null)
+        if(otherObj != this.transform.parent.gameObject)
         {
-            Destroy(collision.gameObject);
+            return;
         }
+
+
     }
 }
