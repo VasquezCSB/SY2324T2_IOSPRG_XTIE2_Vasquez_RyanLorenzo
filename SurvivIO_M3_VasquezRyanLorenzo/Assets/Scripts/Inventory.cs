@@ -21,6 +21,7 @@ public class Inventory : MonoBehaviour
     public TextMeshProUGUI clipCount_Shotgun;
     public TextMeshProUGUI clipCount_Automatic;
     public GameObject[] clipCountList;
+    public TextMeshProUGUI[] clipCountListText;
 
     [Header("Reload Clip Text Vars")]
     public TextMeshProUGUI reloadClip_Pistol;
@@ -34,6 +35,12 @@ public class Inventory : MonoBehaviour
     public GameObject[] guns;
     public GameObject weaponHolder;
     public GameObject currentGun;
+
+    [Header("NewClip&Reload")]
+    public int newCurrentClip;
+    public int newMaxClipSize;
+    public int newCurrentAmmo;
+    public int newMaxAmmoSize;
 
     [Header("ClipAndReload")]
     public int currentClip;
@@ -162,6 +169,22 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    private IEnumerator ReloadCoroutine(float seconds, int ammo, int maxClipSize, int currentClip)
+    {
+        yield return new WaitForSeconds(seconds);
+
+
+
+    }
+
+    void AddAmmo(int ammo, int maxAmmoSize)
+    {
+        if (ammo > maxAmmoSize)
+        {
+            ammo = maxAmmoSize;
+        }
+    }
+
     //Increases reserve ammo
     public void AddPistolAmmo()
     {
@@ -195,7 +218,7 @@ public class Inventory : MonoBehaviour
     {
         if (hasPistol == true)
         {
-            showPistol();
+            ShowStuff(0, 0);
         }
     }
 
@@ -204,93 +227,36 @@ public class Inventory : MonoBehaviour
         //For Shotgun
         if (hasShotgun == true && hasAutomatic == false)
         {
-            showShotgun();
+            //showShotgun();
+            ShowStuff(1, 1);
         }
         
         //For Automatic
         if(hasAutomatic == true && hasShotgun == false)
         {
-            showAutomatic();
+            //showAutomatic();
+            ShowStuff(2, 2);
         }
     }
 
-    public void showPistol()
+    public void ShowStuff(int gunIndex, int clipcountIndex)
     {
         for (int i = 0; i < totalWeapons; i++)
         {
             guns[i] = weaponHolder.transform.GetChild(i).gameObject;
             guns[i].SetActive(false);
         }
-        guns[0].SetActive(true);
-        currentGun = guns[0];
-        currentWeaponIndex = 0;
 
-        for (int i = 0; i < clipCountList.Length; i++)
-        {
-            clipCountList[i].SetActive(false);
-        }
-        clipCount_Pistol.gameObject.SetActive(true);
-        clipCount_Pistol.text = currentClip.ToString();
-
-        for (int i = 0; i < reloadClipList.Length; i++)
-        {
-            reloadClipList[i].SetActive(false);
-        }
-        reloadClip_Pistol.gameObject.SetActive(true);
-        reloadClip_Pistol.text = pistolAmmo.ToString();
-    }
-
-    public void showShotgun()
-    {
-        for (int i = 0; i < totalWeapons; i++)
-        {
-            guns[i] = weaponHolder.transform.GetChild(i).gameObject;
-            guns[i].SetActive(false);
-        }
-        guns[1].SetActive(true);
-        currentGun = guns[1];
-        currentWeaponIndex = 1;
-
-        for (int i = 0; i < clipCountList.Length; i++)
-        {
-            clipCountList[i].SetActive(false);
-        }
-        clipCount_Shotgun.gameObject.SetActive(true);
-        clipCount_Shotgun.text = currentClip_Shotgun.ToString();
-
-        for (int i = 0; i < reloadClipList.Length; i++)
-        {
-            reloadClipList[i].SetActive(false);
-        }
-        reloadClip_Shotgun.gameObject.SetActive(true);
-        reloadClip_Shotgun.text = shotgunAmmo.ToString();
-    }
-
-    public void showAutomatic()
-    {
-        for (int i = 0; i < totalWeapons; i++)
-        {
-            guns[i] = weaponHolder.transform.GetChild(i).gameObject;
-            guns[i].SetActive(false);
-        }
-        guns[2].SetActive(true);
-        currentGun = guns[2];
-        currentWeaponIndex = 2;
+        guns[gunIndex].SetActive(true);
+        currentGun = guns[gunIndex];
+        currentWeaponIndex = gunIndex;
 
         for (int i = 0; i < clipCountList.Length; i++)
         {
             clipCountList[i].SetActive(false);
         }
 
-        clipCount_Automatic.gameObject.SetActive(true);
-        clipCount_Automatic.text = currentClip_Automatic.ToString();
-
-        for (int i = 0; i < reloadClipList.Length; i++)
-        {
-            reloadClipList[i].SetActive(false);
-        }
-
-        reloadClip_Automatic.gameObject.SetActive(true);
-        reloadClip_Automatic.text = automaticAmmo.ToString();
+        clipCountList[clipcountIndex].SetActive(true);
+        clipCountListText[clipcountIndex].text = currentClip.ToString();
     }
 }

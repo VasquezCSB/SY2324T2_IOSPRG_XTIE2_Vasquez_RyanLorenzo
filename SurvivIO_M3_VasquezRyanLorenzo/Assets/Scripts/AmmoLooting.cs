@@ -22,19 +22,19 @@ public class AmmoLooting : MonoBehaviour
         {
             if(ammoTypesVar == AmmoTypes.pistolAmmo)
             {
-                pistolLoot(1,8);
+                AmmoLoot(ref randomPistolAmmoSize, 1, 8);
                 collision.GetComponent<Inventory>().pistolAmmo += randomPistolAmmoSize;
                 Debug.Log("PistolLoot: " + collision.GetComponent<Inventory>().pistolAmmo);
 
             } else if(ammoTypesVar == AmmoTypes.shotgunAmmo)
             {
-                shotgunLoot(1,2);
+                AmmoLoot(ref randomShotgunAmmoSize, 1, 2);
                 collision.GetComponent<Inventory>().shotgunAmmo += randomShotgunAmmoSize;
                 Debug.Log("ShotgunLoot: " + collision.GetComponent<Inventory>().shotgunAmmo);
             }
             else if (ammoTypesVar == AmmoTypes.automaticAmmo)
             {
-                automaticLoot(5,15);
+                AmmoLoot(ref randomAutomaticAmmoSize, 5,15);
                 collision.GetComponent<Inventory>().automaticAmmo += randomAutomaticAmmoSize;
             }
 
@@ -42,18 +42,8 @@ public class AmmoLooting : MonoBehaviour
         }
     }
 
-    public void pistolLoot(int minAmmo, int maxAmmo)
+    public void AmmoLoot(ref int ammoTypeSize, int minAmmo, int maxAmmo)
     {
-        randomPistolAmmoSize = Random.Range(minAmmo, maxAmmo);
-    }
-
-    public void shotgunLoot(int minAmmo, int maxAmmo)
-    {
-        randomShotgunAmmoSize = Random.Range(minAmmo, maxAmmo);
-    }
-
-    public void automaticLoot(int minAmmo, int maxAmmo)
-    {
-        randomAutomaticAmmoSize = Random.Range(minAmmo, maxAmmo);
+        ammoTypeSize = Random.Range(minAmmo, maxAmmo);
     }
 }

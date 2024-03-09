@@ -48,9 +48,10 @@ MonoBehaviour:
   - {fileID: 5297379833465412723, guid: caa321a696477b841b9e02ec86d69407, type: 3}
   - {fileID: 6745784486702749670, guid: 8435dc18a45e3ea4d9a361800c8105b9, type: 3}
   - {fileID: 2210217219953350965, guid: 671e28991dccd194592b8369559f0a61, type: 3}
-  totalAmmoAmount: 10
   gunLoot:
-  - {fileID: 2439687236080476485, guid: bd69e836c92b72247a998f5624edd7e0, type: 3}
-  - {fileID: 2647500452098108501, guid: a1b1da6449a25584ba7c993980be5250, type: 3}
-  - {fileID: 3137539957097353793, guid: bab0ff3d70de02d4d9d011e91fc1cdbd, type: 3}
-  totalGunAmount: 10
+  - {fileID: 8878738123936811829, guid: bd69e836c92b72247a998f5624edd7e0, type: 3}
+  - {fileID: 382245396097003490, guid: a1b1da6449a25584ba7c993980be5250, type: 3}
+  - {fileID: 145668909157689702, guid: bab0ff3d70de02d4d9d011e91fc1cdbd, type: 3}
+  objectLoot: []
+  totalLootAmount: 10
+  randomVar: 0

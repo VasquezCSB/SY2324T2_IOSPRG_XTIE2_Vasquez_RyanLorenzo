@@ -14,13 +14,15 @@ public class Enemy : Unit
         RandomSpawn();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void RandomSpawn()
     {
-        if(randomWeaponSpawnNum == 0)
+        randomWeaponSpawnNum = Random.Range(0, randomWeaponSpawn.Length);
+
+        if (randomWeaponSpawnNum == 0)
         {
             randomWeaponSpawn[0].SetActive(true);
-        } else if(randomWeaponSpawnNum == 1)
+        }
+        else if (randomWeaponSpawnNum == 1)
         {
             randomWeaponSpawn[1].SetActive(true);
         }
@@ -28,10 +30,5 @@ public class Enemy : Unit
         {
             randomWeaponSpawn[2].SetActive(true);
         }
-    }
-
-    private void RandomSpawn()
-    {
-        randomWeaponSpawnNum = Random.Range(0, randomWeaponSpawn.Length);
     }
 }

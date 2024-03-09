@@ -1,0 +1,26 @@
+9 March 2024
+Sir Feedback
+
+- Zoom out camera
+- Replace 3 empty boxes as colors for what type of gun ammo its for
+- - Tracks how much ammo of certain you have
+- - Get rid of little cliop square and replace it with the 3 white boxes
+- 
+
+LookAt
+- Add slight 90 degrees so that everytime right joystick moves, it aims where-ever it is pointed at
+
+Inventory
+- Line no 39 - 42 (Make them structs)
+- Line no. 166 - 192 (Make them one function; use ref)
+- Line 218 - 296 (Optimize implementation)
+
+Enemy
+- Line No. (17 - 33) Simplify weapon spawn
+
+Bullet
+-Destroy after x numebr of seconds
+
+Shooting.cs
+- Line no. 66 - 82 (Simplify)
+- Put reload in Gun Parent Class
