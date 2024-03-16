@@ -36,9 +36,9 @@ public class Shooting : MonoBehaviour
     void Update()
     {
         //clip_Pistol.text = currentClip_Pistol.ToString();
-        clip_Pistol.text = bulletInventory.GetComponent<Inventory>().currentClip.ToString();
-        clip_Shotgun.text = bulletInventory.GetComponent<Inventory>().currentClip_Shotgun.ToString();
-        clip_Automatic.text = bulletInventory.GetComponent<Inventory>().currentClip_Automatic.ToString();
+        //clip_Pistol.text = bulletInventory.GetComponent<Inventory>().currentClip.ToString();
+        //clip_Shotgun.text = bulletInventory.GetComponent<Inventory>().currentClip_Shotgun.ToString();
+        //clip_Automatic.text = bulletInventory.GetComponent<Inventory>().currentClip_Automatic.ToString();
 
         if (isPressed)
         {
@@ -84,21 +84,23 @@ public class Shooting : MonoBehaviour
 
     public void Reload()
     {
-        if (bulletInventory.GetComponent<Inventory>().hasPistol)
-        {
-            bulletInventory.GetComponent<Inventory>().PistolReload();
-        }
+        Debug.Log("Wayer");
+        bulletInventory.GetComponent<Inventory>().OverallReload();
+        //if (bulletInventory.GetComponent<Inventory>().hasPistol)
+        //{
+        //    bulletInventory.GetComponent<Inventory>().PistolReload();
+        //}
         
-        if (bulletInventory.GetComponent<Inventory>().hasShotgun)
-        {
-            bulletInventory.GetComponent<Inventory>().ShotgunReload();
+        //if (bulletInventory.GetComponent<Inventory>().hasShotgun)
+        //{
+        //    bulletInventory.GetComponent<Inventory>().ShotgunReload();
 
-        }
+        //}
         
-        if (bulletInventory.GetComponent<Inventory>().hasAutomatic)
-        {
-            bulletInventory.GetComponent<Inventory>().AutomaticReload();
+        //if (bulletInventory.GetComponent<Inventory>().hasAutomatic)
+        //{
+        //    bulletInventory.GetComponent<Inventory>().AutomaticReload();
 
-        }
+        //}
     }
 }
