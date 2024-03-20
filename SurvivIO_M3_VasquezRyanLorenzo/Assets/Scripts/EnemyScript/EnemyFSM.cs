@@ -35,35 +35,39 @@ public class EnemyFSM : MonoBehaviour
 
     public int currentBullets;
 
+    //pistol
+    public int pistolAmmoLeft;
+    public float shootInterval_Pistol = 2.16f;
+
     //shotgun
     public int pellets = 8; // Number of pellets per shot
     public float spreadAngle = 30f; // Spread angle of pellets
+    public int shotgunAmmoLeft;
+    public float shootInterval_Shotgun = 0.5f;
 
     //automatic
-    public float shootInterval = 0.1f;
+    public float shootInterval_Automatic = 0.35f;
     public float projectileSpeed = 10f;
-    public int maxBullets; // Adjust this as per your requirement
-    private float shootTimer = 0f;
+    public int automaticAmmoLeft;
+
+    //Common
+    private bool isReloading = false;
     private bool isFiring = false;
 
+    private float shootTimer_Pistol = 2.16f;
+    private float shootTimer_Shotgun = 0.6f;
+    private float shootTimer_Automatic = 0.35f;
+
+    public HealthManager healthManager;
     float patrolOffset = .5f;
     Vector2 targetPoint = Vector2.zero;
 
     private void Start()
     {
-        //if (enemy.GetComponent<Enemy>().enemyTypes == EnemyTypes.pistolEnemy)
-        //{
-        //    maxBullets = 15;
-        //}
-        //else if (enemy.GetComponent<Enemy>().enemyTypes == EnemyTypes.shotgunEnemy)
-        //{
-        //    maxBullets = 2;
-        //}
-        //else if (enemy.GetComponent<Enemy>().enemyTypes == EnemyTypes.automaticEnemy)
-        //{
-        //    maxBullets = 30;
-        //}
-        currentBullets = maxBullets;
+        healthManager = HealthManager.instance.gameObject.GetComponent<HealthManager>();
+        pistolAmmoLeft = 15;
+        shotgunAmmoLeft = 2;
+        automaticAmmoLeft = 30;
 
     }
 
@@ -154,62 +158,103 @@ public class EnemyFSM : MonoBehaviour
     {
         if (enemy.GetComponent<Enemy>().enemyTypes == EnemyTypes.pistolEnemy)
         {
-            Debug.Log("pistolBullets: " + currentBullets);
 
-            //Debug.Log("Alfred+pistol");
-            if (timeToFire <= 0f)
+            if (this.GetComponent<Enemy>().Target != null)
             {
-                Debug.Log("inRange");
-                Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation);
-                timeToFire = fireRate;
-            }
-            else
-            {
-                timeToFire -= Time.deltaTime;
+                if (pistolAmmoLeft > 0 && !isReloading)
+                {
+
+                    // Aim towards the target
+                    Vector2 direction = (this.GetComponent<Enemy>().Target.position - transform.position).normalized;
+
+                    if (!isFiring)
+                    {
+                        pistolShoot();
+                        isFiring = true;
+                    }
+
+                    // Shoot at intervals
+                    shootTimer_Pistol -= Time.deltaTime;
+                    if (shootTimer_Pistol <= 0f)
+                    {
+                        isFiring = false;
+                        shootTimer_Pistol = shootInterval_Pistol;
+                    }
+                }
+                else if (pistolAmmoLeft <= 0 && !isReloading)
+                {
+                    isReloading = true;
+                    Invoke("PistolReload", 2.0f);
+                }
+
             }
         }
 
         if (enemy.GetComponent<Enemy>().enemyTypes == EnemyTypes.shotgunEnemy)
         {
 
-            Debug.Log("shotgunBullets: " + currentBullets);
-
-            Debug.Log("Alfred+shotgun");
-
-            if (timeToFire <= 0f)
+            if (this.GetComponent<Enemy>().Target != null)
             {
-                Debug.Log("inRange");
-                shotgunEnemy(2);
-                timeToFire = fireRate;
 
-            }
-            else
-            {
-                timeToFire -= Time.deltaTime;
+                // Check if reloading
+                if (isReloading)
+                    return;
+
+                // Check if out of ammo
+                if (shotgunAmmoLeft <= 0)
+                {
+                    ShotgunReload();
+                    return;
+                }
+
+                // Check if shooting
+                if (!isFiring)
+                {
+                    shotgunEnemy();
+                    isFiring = true;
+                }
+
+                shootTimer_Shotgun -= Time.deltaTime;
+                if (shootTimer_Shotgun <= 0f)
+                {
+                    isFiring = false;
+                    shootTimer_Shotgun = shootInterval_Shotgun;
+                }
+
             }
         }
 
         if (enemy.GetComponent<Enemy>().enemyTypes == EnemyTypes.automaticEnemy)
         {
-            Debug.Log("automaticBullets: " + currentBullets);
-            if (this.GetComponent<Enemy>().Target != null && currentBullets > 0)
+
+            if (this.GetComponent<Enemy>().Target != null)
             {
-                // Aim towards the target
-                Vector2 direction = (this.GetComponent<Enemy>().Target.position - transform.position).normalized;
-
-                if (!isFiring)
+                if (automaticAmmoLeft > 0 && !isReloading)
                 {
-                    automaticShoot(direction);
-                    isFiring = true;
-                }
 
-                // Shoot at intervals
-                shootTimer -= Time.deltaTime;
-                if (shootTimer <= 0f)
-                {
-                    isFiring = false;
-                    shootTimer = shootInterval;
+                    // Aim towards the target
+                    Vector2 direction = (this.GetComponent<Enemy>().Target.position - transform.position).normalized;
+
+                    if (!isFiring)
+                    {
+                        automaticShoot(direction);
+                        isFiring = true;
+                    }
+
+                    // Shoot at intervals
+                    shootTimer_Automatic -= Time.deltaTime;
+                    if (shootTimer_Automatic <= 0f)
+                    {
+                        isFiring = false;
+                        shootTimer_Automatic = shootInterval_Automatic;
+                    }
                 }
+                else if (automaticAmmoLeft <= 0 && !isReloading)
+                {
+                    isReloading = true;
+                    Invoke("AutomaticReload", 2.3f);
+                }
+                
             }
         }
 
@@ -237,19 +282,21 @@ public class EnemyFSM : MonoBehaviour
         return this.GetComponent<Enemy>().Target;
     }
 
-
-
-    private void shotgunEnemy(int shotgunCount)
+    private void pistolShoot()
     {
-        if (shotgunCount > 0)
-        {
-            for (int i = 0; i < pellets; i++)
-            {
-                Quaternion rotation = Quaternion.Euler(0f, 0f, Random.Range(-spreadAngle, spreadAngle));
-                Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation * rotation);
-            }
-            shotgunCount--;
+        Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation);
+        bulletPrefab.GetComponent<BulletMovement>().damage = 10;
+        pistolAmmoLeft--;
+    }
+
+    private void shotgunEnemy()
+    {
+        for (int i = 0; i < pellets; i++){
+            Quaternion rotation = Quaternion.Euler(0f, 0f, Random.Range(-spreadAngle, spreadAngle));
+            Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation * rotation);
         }
+        bulletPrefab.GetComponent<BulletMovement>().damage = 10;
+        shotgunAmmoLeft--;
     }
     
     private void automaticShoot(Vector2 direction)
@@ -257,11 +304,32 @@ public class EnemyFSM : MonoBehaviour
         GameObject projectile = Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation);
         projectile.GetComponent<Rigidbody2D>().velocity = direction * projectileSpeed;
 
-        currentBullets--;
+        bulletPrefab.GetComponent<BulletMovement>().damage = 15;
+        automaticAmmoLeft--;
+    }
 
-        if(currentBullets <= 0)
-        {
-            Debug.Log("automaticNoMore");
-        }
+    private void PistolReload()
+    {
+        pistolAmmoLeft = 15;
+        isReloading = false;
+    }
+
+    void AutomaticReload()
+    {
+        automaticAmmoLeft = 30;
+        isReloading = false;
+    }
+
+    void ShotgunReload()
+    {
+        isReloading = true;
+        Invoke("FinishShotgunReload", 2.7f);
+    }
+
+    void FinishShotgunReload()
+    {
+        shotgunAmmoLeft = 2;
+        isReloading = false;
+
     }
 }

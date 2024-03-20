@@ -7,7 +7,8 @@ public class PlayerMovement : Unit
     [SerializeField] private Rigidbody2D rb; 
     public Joystick leftJoyStick;
     public Joystick rightJoyStick;
-    public BulletMovement bullet;
+    public GameObject bullet;
+    public HealthManager healthManager;
 
     Vector2 move;
     [SerializeField] private float _moveSpeed;
@@ -36,6 +37,7 @@ public class PlayerMovement : Unit
         if (collision.gameObject.GetComponent<BulletMovement>() != null)
         {
             Destroy(collision.gameObject);
+            healthManager.TakeDamage(bullet.GetComponent<BulletMovement>().damage);
         }
     }
 }
