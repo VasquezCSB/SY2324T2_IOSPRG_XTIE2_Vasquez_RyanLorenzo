@@ -86,21 +86,5 @@ public class Shooting : MonoBehaviour
     {
         Debug.Log("Wayer");
         bulletInventory.GetComponent<Inventory>().OverallReload();
-        //if (bulletInventory.GetComponent<Inventory>().hasPistol)
-        //{
-        //    bulletInventory.GetComponent<Inventory>().PistolReload();
-        //}
-        
-        //if (bulletInventory.GetComponent<Inventory>().hasShotgun)
-        //{
-        //    bulletInventory.GetComponent<Inventory>().ShotgunReload();
-
-        //}
-        
-        //if (bulletInventory.GetComponent<Inventory>().hasAutomatic)
-        //{
-        //    bulletInventory.GetComponent<Inventory>().AutomaticReload();
-
-        //}
     }
 }

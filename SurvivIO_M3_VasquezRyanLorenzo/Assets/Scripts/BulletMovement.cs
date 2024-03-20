@@ -5,6 +5,7 @@ using UnityEngine;
 public class BulletMovement : MonoBehaviour
 {
     public float speed;
+    public float destroyDelay = 5f;
     private Rigidbody2D rb;
 
     // Start is called before the first frame update
@@ -12,11 +13,6 @@ public class BulletMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = transform.up * speed;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Destroy(gameObject, destroyDelay);
     }
 }

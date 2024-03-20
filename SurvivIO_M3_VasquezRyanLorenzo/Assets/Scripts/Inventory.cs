@@ -412,11 +412,6 @@ public class Inventory : MonoBehaviour
         Debug.Log("VasquezEnding:" + gunAmmo);
         clipText.text = gunCurrentClip.ToString();
         reloadText.text = gunAmmo.ToString();
-
-        //clipCount_Pistol.text= gunCurrentClip.ToString();
-        //clipCount_Shotgun.text = currentClip_Shotgun.ToString();
-        //clipCount_Automatic.text = currentClip_Automatic.ToString();
-        //AddGunAmmo(gunAmmo, gunMaxAmmoSize);
     }
 
     private IEnumerator PistolReloadCoroutine(float seconds)

@@ -8,6 +8,8 @@ public class Enemy : Unit
     public GameObject[] randomWeaponSpawn;
     public int randomWeaponSpawnNum;
 
+    public EnemyTypes enemyTypes;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,17 +20,20 @@ public class Enemy : Unit
     {
         randomWeaponSpawnNum = Random.Range(0, randomWeaponSpawn.Length);
 
-        if (randomWeaponSpawnNum == 0)
+        if (randomWeaponSpawnNum == 0) //Pistol
         {
             randomWeaponSpawn[0].SetActive(true);
+            enemyTypes = EnemyTypes.pistolEnemy;
         }
-        else if (randomWeaponSpawnNum == 1)
+        else if (randomWeaponSpawnNum == 1) //Shotgun
         {
             randomWeaponSpawn[1].SetActive(true);
+            enemyTypes = EnemyTypes.shotgunEnemy;
         }
-        else if (randomWeaponSpawnNum == 2)
+        else if (randomWeaponSpawnNum == 2) //Automatic
         {
             randomWeaponSpawn[2].SetActive(true);
+            enemyTypes = EnemyTypes.automaticEnemy;
         }
     }
 }

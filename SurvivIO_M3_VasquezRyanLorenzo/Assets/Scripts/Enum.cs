@@ -16,3 +16,10 @@ public enum GunTypes
     shotgun,
     automatic
 }
+
+public enum EnemyTypes
+{
+    pistolEnemy,
+    shotgunEnemy,
+    automaticEnemy
+}
