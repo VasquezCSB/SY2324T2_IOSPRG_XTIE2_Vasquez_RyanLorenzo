@@ -53,5 +53,13 @@ MonoBehaviour:
   - {fileID: 382245396097003490, guid: a1b1da6449a25584ba7c993980be5250, type: 3}
   - {fileID: 145668909157689702, guid: bab0ff3d70de02d4d9d011e91fc1cdbd, type: 3}
   objectLoot: []
+  enemy: {fileID: 2127800976031062594, guid: 26c237e987ddc5948b070ef1e6cad5d7, type: 3}
+  playerTransform: {fileID: 8209068354027341444, guid: 3f94b5413e119dc45a93a7979a828ae5, type: 3}
   totalLootAmount: 10
+  totalEnemies: 20
   randomVar: 0
+  spawnRadius: 100
+  minDistanceFromPlayer: 10
+  minDistanceBetweenEnemies: 10
+  spawnedEnemies:
+  - {fileID: 2127800976031062648, guid: 26c237e987ddc5948b070ef1e6cad5d7, type: 3}
