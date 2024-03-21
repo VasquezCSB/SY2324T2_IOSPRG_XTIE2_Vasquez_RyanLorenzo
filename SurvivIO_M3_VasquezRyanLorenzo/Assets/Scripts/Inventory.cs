@@ -82,34 +82,31 @@ public class Inventory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //reloadClip_Pistol.text = pistolAmmo.ToString();
-        //reloadClip_Shotgun.text = shotgunAmmo.ToString();
-        //reloadClip_Automatic.text = automaticAmmo.ToString();
+        reloadClip_Pistol.text = pistolAmmo.ToString();
+        reloadClip_Shotgun.text = shotgunAmmo.ToString();
+        reloadClip_Automatic.text = automaticAmmo.ToString();
 
-        //AddGunAmmo(pistolAmmo, maxAmmoSize);//Pistol
-        //AddGunAmmo(shotgunAmmo, maxAmmoSize_Shotgun);
-        //AddGunAmmo(automaticAmmo, maxAmmoSize_Automatic);
     }
 
     public void OverallReload()
     {
-
         if (hasPistol)
         {
             Debug.Log("Wayer2");
-            StartCoroutine(GunReloadCoroutine(2, pistolAmmo, maxClipSize, currentClip, maxAmmoSize, clipCount_Pistol, reloadClip_Pistol));
+            StartCoroutine(GunReloadCoroutine(2, pistolAmmo, maxClipSize, currentClip, maxAmmoSize, 
+                clipCount_Pistol, reloadClip_Pistol, 0));
         }
             
         else if (hasShotgun)
         {
             Debug.Log("AS");
-            StartCoroutine(GunReloadCoroutine(2.3f, shotgunAmmo, maxClipSize_Shotgun, currentClip_Shotgun, maxAmmoSize_Shotgun, clipCount_Shotgun, reloadClip_Shotgun));
+            StartCoroutine(GunReloadCoroutine(2.3f, shotgunAmmo, maxClipSize_Shotgun, currentClip_Shotgun, maxAmmoSize_Shotgun, clipCount_Shotgun, reloadClip_Shotgun, 1));
         }
             
         else if (hasAutomatic)
         {
             Debug.Log("Asjk");
-            StartCoroutine(GunReloadCoroutine(2.7f, automaticAmmo, maxClipSize_Automatic, currentClip_Automatic, maxAmmoSize_Automatic, clipCount_Automatic, reloadClip_Automatic));
+            StartCoroutine(GunReloadCoroutine(2.7f, automaticAmmo, maxClipSize_Automatic, currentClip_Automatic, maxAmmoSize_Automatic, clipCount_Automatic, reloadClip_Automatic,2));
         }
             
     }
@@ -122,36 +119,53 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private IEnumerator GunReloadCoroutine(float seconds, int gunAmmo, int gunMaxClipSize, int gunCurrentClip, int gunMaxAmmoSize, TextMeshProUGUI clipText, TextMeshProUGUI reloadText)
+    private IEnumerator GunReloadCoroutine(float seconds, int gunAmmo, int gunMaxClipSize, int gunCurrentClip, int gunMaxAmmoSize, TextMeshProUGUI clipText, TextMeshProUGUI reloadText, int gunIndex)
     {
-        Debug.Log("VasquezBeginning:" + gunAmmo);
         yield return new WaitForSeconds(seconds);
-        Debug.Log("Mask");
         if (gunAmmo > 0 && gunAmmo > gunMaxClipSize)
         {
             gunCurrentClip = gunMaxClipSize;
             gunAmmo -= gunMaxClipSize;
-            Debug.Log("Pistol Ammo1 Alfred");
-
         }
         else if (gunAmmo > 0 && gunAmmo < gunMaxAmmoSize)
         {
             gunCurrentClip = gunAmmo;
             //Debug.Log(shooting.currentClip_Pistol);
             gunAmmo = 0;
-            Debug.Log("Fire");
         }
-        Debug.Log("VasquezEnding:" + gunAmmo);
-        clipText.text = gunCurrentClip.ToString();
-        reloadText.text = gunAmmo.ToString();
+
+        if (gunIndex == 0)
+        {
+            pistolAmmo = gunAmmo;
+
+            clipText.text = gunCurrentClip.ToString();
+            reloadText.text = pistolAmmo.ToString();
+
+        } else if(gunIndex == 1)
+        {
+            shotgunAmmo = gunAmmo;
+
+            clipText.text = gunCurrentClip.ToString();
+            reloadText.text = shotgunAmmo.ToString();
+
+        } else if (gunIndex == 2)
+        {
+            automaticAmmo = gunAmmo;
+
+            clipText.text = gunCurrentClip.ToString();
+            reloadText.text = automaticAmmo.ToString();
+        }
+
     }
 
-    public void setSecondary(bool hasPistol)
+    public void setSecondary(bool hasPistol_)
     {
-        if (hasPistol == true)
+        if (hasPistol_ == true)
         {
             showPistol();
         }
+
+        hasPistol = true;
     }
 
     public void setPrimary()
@@ -160,12 +174,14 @@ public class Inventory : MonoBehaviour
         if (hasShotgun == true && hasAutomatic == false)
         {
             showShotgun();
+            hasPistol = false;
         }
 
         //For Automatic
         if (hasAutomatic == true && hasShotgun == false)
         {
             showAutomatic();
+            hasPistol = false;
         }
     }
 
@@ -186,13 +202,6 @@ public class Inventory : MonoBehaviour
         }
         clipCount_Pistol.gameObject.SetActive(true);
         clipCount_Pistol.text = currentClip.ToString();
-
-        for (int i = 0; i < reloadClipList.Length; i++)
-        {
-            reloadClipList[i].SetActive(false);
-        }
-        reloadClip_Pistol.gameObject.SetActive(true);
-        reloadClip_Pistol.text = pistolAmmo.ToString();
     }
 
     public void showShotgun()
@@ -213,12 +222,6 @@ public class Inventory : MonoBehaviour
         clipCount_Shotgun.gameObject.SetActive(true);
         clipCount_Shotgun.text = currentClip_Shotgun.ToString();
 
-        for (int i = 0; i < reloadClipList.Length; i++)
-        {
-            reloadClipList[i].SetActive(false);
-        }
-        reloadClip_Shotgun.gameObject.SetActive(true);
-        reloadClip_Shotgun.text = shotgunAmmo.ToString();
     }
 
     public void showAutomatic()
@@ -240,12 +243,5 @@ public class Inventory : MonoBehaviour
         clipCount_Automatic.gameObject.SetActive(true);
         clipCount_Automatic.text = currentClip_Automatic.ToString();
 
-        for (int i = 0; i < reloadClipList.Length; i++)
-        {
-            reloadClipList[i].SetActive(false);
-        }
-
-        reloadClip_Automatic.gameObject.SetActive(true);
-        reloadClip_Automatic.text = automaticAmmo.ToString();
     }
 }

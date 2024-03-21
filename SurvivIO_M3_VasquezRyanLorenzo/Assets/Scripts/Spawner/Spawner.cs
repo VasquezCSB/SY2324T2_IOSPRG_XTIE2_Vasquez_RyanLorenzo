@@ -38,13 +38,11 @@ public class Spawner : MonoBehaviour
 
             if (randomVar >= 0 && randomVar <= 2)
             {
-                Debug.Log("Gun");
                 Instantiate(gunLoot[Random.Range(0, ammoLoot.Length)], _randPos, Quaternion.identity);
 
             }
             else if (randomVar >= 3 && randomVar <= 9)
             {
-                Debug.Log("Ammo");
                 Instantiate(ammoLoot[Random.Range(0, ammoLoot.Length)], _randPos, Quaternion.identity);
             }
 
