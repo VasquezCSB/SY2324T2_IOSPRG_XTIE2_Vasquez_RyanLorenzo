@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : Unit
 {
@@ -8,7 +10,10 @@ public class PlayerMovement : Unit
     public Joystick leftJoyStick;
     public Joystick rightJoyStick;
     public GameObject bullet;
-    public HealthManager healthManager;
+
+
+    [SerializeField] private HealthComponent health;
+    [SerializeField] private InterfaceManager interfaceManager;
 
     Vector2 move;
     [SerializeField] private float _moveSpeed;
@@ -22,7 +27,12 @@ public class PlayerMovement : Unit
     {
         move.x = leftJoyStick.Horizontal;
         move.y = leftJoyStick.Vertical;
-        
+
+        if (health.test == true)
+        {
+            interfaceManager.GameOver();
+        }
+
     }
 
     private void FixedUpdate()
@@ -32,12 +42,17 @@ public class PlayerMovement : Unit
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("HasBullet");
 
         if (collision.gameObject.GetComponent<BulletMovement>() != null)
         {
             Destroy(collision.gameObject);
-            healthManager.TakeDamage(bullet.GetComponent<BulletMovement>().damage);
+            this.GetComponent<HealthComponent>().TakeDamage(bullet.GetComponent<BulletMovement>().damage);
+                
         }
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("Alfred");
     }
 }

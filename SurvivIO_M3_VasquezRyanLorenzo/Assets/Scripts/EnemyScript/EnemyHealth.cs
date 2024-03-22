@@ -9,11 +9,6 @@ public class EnemyHealth : MonoBehaviour
     public Image enemyHealth;
     [SerializeField] private Slider healthSlider;
 
-    //private void Awake()
-    //{
-    //    instance = this;
-    //}
-    // Update is called once per frame
     void Update()
     {
         

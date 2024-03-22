@@ -2,12 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InterfaceManager : MonoBehaviour
 {
     public Image healthBar;
+    public Image background;
+    public TextMeshProUGUI gameOverText;
+    public Button restart;
+    public Button exit;
+    public GameObject spawner;
 
+    [SerializeField] private PlayerMovement playerMovement;
     [Header("Clip Count Text Vars")]
     public TextMeshProUGUI clipCount;
 
@@ -35,4 +42,23 @@ public class InterfaceManager : MonoBehaviour
         clipCount.text = value.ToString();
     }
 
+    public void GameOver()
+    {
+        background.gameObject.SetActive(true);
+        gameOverText.gameObject.SetActive(true);
+        restart.gameObject.SetActive(true);
+        exit.gameObject.SetActive(true);
+        Destroy(spawner);
+    }
+    public void RestartGame()
+    {
+        // Reload the current scene
+        SceneManager.LoadScene(0);
+    }
+
+    public void ExitGame()
+    {
+        // Quit the application (works in standalone builds)
+        Application.Quit();
+    }
 }

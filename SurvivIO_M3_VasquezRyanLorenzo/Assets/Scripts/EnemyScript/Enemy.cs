@@ -11,10 +11,6 @@ public class Enemy : Unit
 
     public EnemyTypes enemyTypes;
 
-    //[SerializeField] private GameObject slider;
-    [SerializeField] private EnemyHealth enemyHealth;
-    public Slider healthBar;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -24,9 +20,6 @@ public class Enemy : Unit
         //curHealth = maxHealth;
         Debug.Log("curHealth: " + curHealth);
 
-        //enemyHealth.GetComponent<EnemyHealth>().EnemyHealthBar(curHealth, maxHealth);
-        //enemyHealth = GetComponentInChildren<EnemyHealth>();
-        //enemyHealth.EnemyHealthBar(curHealth, maxHealth);
         
     }
 
@@ -56,17 +49,8 @@ public class Enemy : Unit
         if (collision.gameObject.GetComponent<BulletMovement>() != null)
         {
             Destroy(collision.gameObject);
-            EnemyDamage(collision.gameObject.GetComponent<BulletMovement>().damage);
-        }
-    }
-
-    public void EnemyDamage(int damage)
-    {
-        curHealth -= damage;
-        enemyHealth.EnemyHealthBar(curHealth, maxHealth);
-        if(curHealth <= 0)
-        {
-            Destroy(gameObject);
+            this.GetComponent<HealthComponent>().TakeDamage(collision.gameObject.GetComponent<BulletMovement>().damage);
+            //EnemyDamage(collision.gameObject.GetComponent<BulletMovement>().damage);
         }
     }
 }

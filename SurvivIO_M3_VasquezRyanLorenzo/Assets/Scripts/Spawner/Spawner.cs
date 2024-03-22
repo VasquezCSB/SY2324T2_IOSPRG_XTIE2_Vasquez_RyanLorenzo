@@ -38,20 +38,21 @@ public class Spawner : MonoBehaviour
 
             if (randomVar >= 0 && randomVar <= 2)
             {
-                Instantiate(gunLoot[Random.Range(0, ammoLoot.Length)], _randPos, Quaternion.identity);
+                GameObject spawnedObject = Instantiate(gunLoot[Random.Range(0, ammoLoot.Length)], _randPos, Quaternion.identity);
+                spawnedObject.transform.parent = this.transform;
 
             }
             else if (randomVar >= 3 && randomVar <= 9)
             {
-                Instantiate(ammoLoot[Random.Range(0, ammoLoot.Length)], _randPos, Quaternion.identity);
+                
+                GameObject spawnedObject = Instantiate(ammoLoot[Random.Range(0, ammoLoot.Length)], _randPos, Quaternion.identity);
+                spawnedObject.transform.parent = this.transform;
             }
-
         }
-
 
         for (int i = 0; i <= totalEnemies - 1; i++)
         {
-            SpawnEnemy();
+            SpawnEnemy(); 
         }
     }
 
@@ -70,7 +71,9 @@ public class Spawner : MonoBehaviour
         }
 
         // Spawn the enemy at the calculated position
-        Transform newEnemy = Instantiate(enemy, spawnPosition, Quaternion.identity).transform;
+        GameObject spawnedEnemy = Instantiate(enemy, spawnPosition, Quaternion.identity);
+        spawnedEnemy.transform.parent = this.transform;
+        Transform newEnemy = spawnedEnemy.transform;
         spawnedEnemies.Add(newEnemy);
 
     }

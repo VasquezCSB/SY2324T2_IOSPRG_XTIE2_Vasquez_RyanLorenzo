@@ -284,7 +284,8 @@ public class EnemyFSM : MonoBehaviour
 
     private void pistolShoot()
     {
-        Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation);
+        GameObject spawnedBullet = Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation);
+        spawnedBullet.transform.parent = this.transform;
         bulletPrefab.GetComponent<BulletMovement>().damage = 10;
         pistolAmmoLeft--;
     }
@@ -293,16 +294,19 @@ public class EnemyFSM : MonoBehaviour
     {
         for (int i = 0; i < pellets; i++){
             Quaternion rotation = Quaternion.Euler(0f, 0f, Random.Range(-spreadAngle, spreadAngle));
-            Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation * rotation);
+            GameObject spawnedBullet =  Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation * rotation);
+            spawnedBullet.transform.parent = this.transform;
         }
         bulletPrefab.GetComponent<BulletMovement>().damage = 10;
         shotgunAmmoLeft--;
+
     }
-    
+
     private void automaticShoot(Vector2 direction)
     {
         GameObject projectile = Instantiate(bulletPrefab, firingPoint.position, firingPoint.rotation);
         projectile.GetComponent<Rigidbody2D>().velocity = direction * projectileSpeed;
+        projectile.transform.parent = this.transform;
 
         bulletPrefab.GetComponent<BulletMovement>().damage = 15;
         automaticAmmoLeft--;
