@@ -59,7 +59,7 @@ public class Spawner : MonoBehaviour
     void SpawnEnemy()
     {
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
-        Vector2 spawnPosition = (Vector2)playerTransform.transform.position + randomDirection * minDistanceFromPlayer * 10;
+        Vector2 spawnPosition = (Vector2)playerTransform.transform.position + randomDirection * minDistanceFromPlayer * 2;
 
         foreach (Transform enemy in spawnedEnemies)
         {
