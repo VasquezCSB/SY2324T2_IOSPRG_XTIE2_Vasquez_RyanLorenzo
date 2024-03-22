@@ -231,4 +231,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03b2384bf9e16054eb08ba53ef09f96a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunTypesVar: 0
+  weaponVar: 1

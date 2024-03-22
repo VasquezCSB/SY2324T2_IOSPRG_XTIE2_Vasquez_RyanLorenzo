@@ -62,4 +62,4 @@ MonoBehaviour:
   minDistanceFromPlayer: 10
   minDistanceBetweenEnemies: 10
   spawnedEnemies:
-  - {fileID: 2127800976031062648, guid: 26c237e987ddc5948b070ef1e6cad5d7, type: 3}
+  - {fileID: 8453461567985270426, guid: 66bef68b717da8748bd99bb047ea3913, type: 3}

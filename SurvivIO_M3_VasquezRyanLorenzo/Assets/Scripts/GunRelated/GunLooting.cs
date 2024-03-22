@@ -5,7 +5,8 @@ using UnityEngine;
 public class GunLooting : MonoBehaviour
 {
 
-    [SerializeField] private GunTypes gunTypesVar;
+    //SerializeField] private GunTypes gunTypesVar;
+    [SerializeField] private CurrentEquipWeapon weaponVar;
     //public Shooting shooting;
 
     private void Start()
@@ -18,25 +19,16 @@ public class GunLooting : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<PlayerMovement>() != null)
         {
-            if (gunTypesVar == GunTypes.pistol)
+            if (weaponVar == CurrentEquipWeapon.pistol)
             {
-                collision.GetComponent<Inventory>().hasPistol = true;
-                collision.GetComponent<Inventory>().setSecondary(true);
+                collision.GetComponent<Inventory>().ChangeSecondaryWeapon(weaponVar);
+                //collision.GetComponent<Inventory>().hasPistol = true;
+                //collision.GetComponent<Inventory>().setSecondary(true);
 
             }
-            else if (gunTypesVar == GunTypes.shotgun)
+            else if (weaponVar == CurrentEquipWeapon.shotgun || weaponVar == CurrentEquipWeapon.automatic)
             {
-                collision.GetComponent<Inventory>().hasShotgun = true;
-                collision.GetComponent<Inventory>().hasAutomatic = false;
-                collision.GetComponent<Inventory>().setPrimary();
-
-
-            }
-            else if (gunTypesVar == GunTypes.automatic)
-            {
-                collision.GetComponent<Inventory>().hasAutomatic = true;
-                collision.GetComponent<Inventory>().hasShotgun = false;
-                collision.GetComponent<Inventory>().setPrimary();
+                collision.GetComponent<Inventory>().ChangePrimaryWeapon(weaponVar);
 
             }
 

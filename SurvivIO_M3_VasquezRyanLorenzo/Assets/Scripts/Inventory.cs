@@ -6,6 +6,10 @@ using TMPro;
 
 public class Inventory : MonoBehaviour
 {
+    [Header("Script Reference")]
+    public InterfaceManager interfaceManagerReference;
+
+
     [Header("Ammo Types")]
     public int pistolAmmo;
     public int shotgunAmmo;
@@ -16,24 +20,22 @@ public class Inventory : MonoBehaviour
     public GameObject shotgun;
     public GameObject automatic;
 
-    [Header("Clip Count Text Vars")]
-    public TextMeshProUGUI clipCount_Pistol;
-    public TextMeshProUGUI clipCount_Shotgun;
-    public TextMeshProUGUI clipCount_Automatic;
+    //[Header("Clip Count Text Vars")]
+    //public TextMeshProUGUI clipCount_Pistol;
+    //public TextMeshProUGUI clipCount_Shotgun;
+    //public TextMeshProUGUI clipCount_Automatic;
     public GameObject[] clipCountList;
 
-    [Header("Reload Clip Text Vars")]
-    public TextMeshProUGUI reloadClip_Pistol;
-    public TextMeshProUGUI reloadClip_Shotgun;
-    public TextMeshProUGUI reloadClip_Automatic;
+    //[Header("Reload Clip Text Vars")]
+    //public TextMeshProUGUI reloadClip_Pistol;
+    //public TextMeshProUGUI reloadClip_Shotgun;
+    //public TextMeshProUGUI reloadClip_Automatic;
     public GameObject[] reloadClipList;
 
     [Header("Weapon Switching")]
     [SerializeField] private int totalWeapons = 1;
-    public int currentWeaponIndex;
     public GameObject[] guns;
     public GameObject weaponHolder;
-    public GameObject currentGun;
 
     [Header("ClipAndReload")]
     public int currentClip;
@@ -54,13 +56,16 @@ public class Inventory : MonoBehaviour
     public int maxAmmoSize_Automatic = 120;
 
     public Shooting shooting;
+    public CurrentEquipWeapon currentEquipWeaponReference = CurrentEquipWeapon.unarmed;
+    public CurrentEquipWeapon currentPrimaryWeapon = CurrentEquipWeapon.unarmed;
+    public CurrentEquipWeapon currentSecondaryWeapon = CurrentEquipWeapon.unarmed;
 
     //public GameObject[] primary;
     private GameObject secondary;
 
-    public bool hasPistol = false;
-    public bool hasShotgun = false;
-    public bool hasAutomatic = false;
+    //public bool hasPistol = false;
+    //public bool hasShotgun = false;
+    //public bool hasAutomatic = false;
 
 
     // Start is called before the first frame update
@@ -82,31 +87,51 @@ public class Inventory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        reloadClip_Pistol.text = pistolAmmo.ToString();
-        reloadClip_Shotgun.text = shotgunAmmo.ToString();
-        reloadClip_Automatic.text = automaticAmmo.ToString();
+        //Debug.Log("currentClip_Automatic: " + currentClip_Automatic);
+        //reloadClip_Pistol.text = pistolAmmo.ToString();
+        //reloadClip_Shotgun.text = shotgunAmmo.ToString();
+        //reloadClip_Automatic.text = automaticAmmo.ToString();
 
+    }
+
+    public void PickUpAmmo(AmmoTypes typeAmmo, int ammoNum)
+    {
+        if (typeAmmo == AmmoTypes.pistolAmmo)
+        {
+            pistolAmmo += ammoNum;
+            interfaceManagerReference.UpdatePistolAmmoUI(pistolAmmo);
+        }
+        else if (typeAmmo == AmmoTypes.shotgunAmmo)
+        {
+            shotgunAmmo += ammoNum;
+            interfaceManagerReference.UpdateShotgunAmmoUI(shotgunAmmo);
+
+        }
+        else if (typeAmmo == AmmoTypes.automaticAmmo)
+        {
+            automaticAmmo += ammoNum;
+            interfaceManagerReference.UpdateAutomaticAmmoUI(automaticAmmo);
+        }
     }
 
     public void OverallReload()
     {
-        if (hasPistol)
+        if (currentEquipWeaponReference == CurrentEquipWeapon.pistol)
         {
             Debug.Log("Wayer2");
-            StartCoroutine(GunReloadCoroutine(2, pistolAmmo, maxClipSize, currentClip, maxAmmoSize, 
-                clipCount_Pistol, reloadClip_Pistol, 0));
+            StartCoroutine(GunReloadCoroutine(2, pistolAmmo, maxClipSize, currentClip, maxAmmoSize, 0));
         }
             
-        else if (hasShotgun)
+        else if (currentEquipWeaponReference == CurrentEquipWeapon.shotgun)
         {
             Debug.Log("AS");
-            StartCoroutine(GunReloadCoroutine(2.3f, shotgunAmmo, maxClipSize_Shotgun, currentClip_Shotgun, maxAmmoSize_Shotgun, clipCount_Shotgun, reloadClip_Shotgun, 1));
+            StartCoroutine(GunReloadCoroutine(2.3f, shotgunAmmo, maxClipSize_Shotgun, currentClip_Shotgun, maxAmmoSize_Shotgun, 1));
         }
             
-        else if (hasAutomatic)
+        else if (currentEquipWeaponReference == CurrentEquipWeapon.automatic)
         {
             Debug.Log("Asjk");
-            StartCoroutine(GunReloadCoroutine(2.7f, automaticAmmo, maxClipSize_Automatic, currentClip_Automatic, maxAmmoSize_Automatic, clipCount_Automatic, reloadClip_Automatic,2));
+            StartCoroutine(GunReloadCoroutine(2.7f, automaticAmmo, maxClipSize_Automatic, currentClip_Automatic, maxAmmoSize_Automatic, 2));
         }
             
     }
@@ -119,7 +144,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    private IEnumerator GunReloadCoroutine(float seconds, int gunAmmo, int gunMaxClipSize, int gunCurrentClip, int gunMaxAmmoSize, TextMeshProUGUI clipText, TextMeshProUGUI reloadText, int gunIndex)
+    private IEnumerator GunReloadCoroutine(float seconds, int gunAmmo, int gunMaxClipSize, int gunCurrentClip, int gunMaxAmmoSize, int gunIndex)
     {
         yield return new WaitForSeconds(seconds);
         if (gunAmmo > 0 && gunAmmo > gunMaxClipSize)
@@ -137,53 +162,142 @@ public class Inventory : MonoBehaviour
         if (gunIndex == 0)
         {
             pistolAmmo = gunAmmo;
-
-            clipText.text = gunCurrentClip.ToString();
-            reloadText.text = pistolAmmo.ToString();
-
+            currentClip = gunCurrentClip;
+            //clipText.text = gunCurrentClip.ToString();
+            //reloadText.text = pistolAmmo.ToString();
+            interfaceManagerReference.UpdatePistolAmmoUI(pistolAmmo);
         } else if(gunIndex == 1)
         {
             shotgunAmmo = gunAmmo;
+            currentClip_Shotgun = gunCurrentClip;
+            interfaceManagerReference.UpdateShotgunAmmoUI(shotgunAmmo);
 
-            clipText.text = gunCurrentClip.ToString();
-            reloadText.text = shotgunAmmo.ToString();
+            //clipText.text = gunCurrentClip.ToString();
+            //reloadText.text = shotgunAmmo.ToString();
 
-        } else if (gunIndex == 2)
+        }
+        else if (gunIndex == 2)
         {
             automaticAmmo = gunAmmo;
-
-            clipText.text = gunCurrentClip.ToString();
-            reloadText.text = automaticAmmo.ToString();
+            currentClip_Automatic = gunCurrentClip;
+            interfaceManagerReference.UpdateAutomaticAmmoUI(automaticAmmo);
+            //clipText.text = gunCurrentClip.ToString();
+            //reloadText.text = automaticAmmo.ToString();
         }
 
+        interfaceManagerReference.UpdateClipCount(gunCurrentClip);
     }
-
-    public void setSecondary(bool hasPistol_)
+    public void ChangePrimaryWeapon(CurrentEquipWeapon weaponEquip)
     {
-        if (hasPistol_ == true)
+        currentPrimaryWeapon = weaponEquip;
+        currentEquipWeaponReference = currentPrimaryWeapon;
+
+        for (int i = 0; i < totalWeapons; i++)
         {
-            showPistol();
+            //guns[i] = weaponHolder.transform.GetChild(i).gameObject;
+            guns[i].SetActive(false);
         }
 
-        hasPistol = true;
+        if (currentEquipWeaponReference == CurrentEquipWeapon.shotgun)
+        {
+            guns[1].SetActive(true);
+            interfaceManagerReference.UpdateClipCount(currentClip_Shotgun);
+        } 
+        else if (currentEquipWeaponReference == CurrentEquipWeapon.automatic)
+        {
+            guns[2].SetActive(true);
+            interfaceManagerReference.UpdateClipCount(currentClip_Automatic);
+            Debug.Log("currentClip_Automatic: " + currentClip_Automatic);
+        }
     }
 
-    public void setPrimary()
+    public void ChangeSecondaryWeapon(CurrentEquipWeapon weaponEquip)
     {
-        //For Shotgun
-        if (hasShotgun == true && hasAutomatic == false)
+        currentSecondaryWeapon = weaponEquip;
+        currentEquipWeaponReference = currentSecondaryWeapon;
+
+        for (int i = 0; i < totalWeapons; i++)
         {
-            showShotgun();
-            hasPistol = false;
+            //guns[i] = weaponHolder.transform.GetChild(i).gameObject;
+            guns[i].SetActive(false);
         }
 
-        //For Automatic
-        if (hasAutomatic == true && hasShotgun == false)
+        if (currentEquipWeaponReference == CurrentEquipWeapon.pistol)
         {
-            showAutomatic();
-            hasPistol = false;
+            guns[0].SetActive(true);
+            interfaceManagerReference.UpdateClipCount(currentClip);
+            Debug.Log("currentClip_Automatic: " + currentClip_Automatic);
         }
     }
+
+    public void SwitchToPistol()
+    {
+        currentEquipWeaponReference = currentSecondaryWeapon;
+
+        for (int i = 0; i < totalWeapons; i++)
+        {
+            //guns[i] = weaponHolder.transform.GetChild(i).gameObject;
+            guns[i].SetActive(false);
+        }
+
+        if (currentEquipWeaponReference == CurrentEquipWeapon.pistol)
+        {
+            guns[0].SetActive(true);
+            interfaceManagerReference.UpdateClipCount(currentClip);
+            Debug.Log("currentClip_Automatic: " + currentClip_Automatic);
+
+        }
+    }
+
+    public void SwitchToPrimary()
+    {
+       currentEquipWeaponReference = currentPrimaryWeapon;
+
+        for (int i = 0; i < totalWeapons; i++)
+        {
+            //guns[i] = weaponHolder.transform.GetChild(i).gameObject;
+            guns[i].SetActive(false);
+        }
+
+        if (currentEquipWeaponReference == CurrentEquipWeapon.shotgun)
+        {
+            guns[1].SetActive(true);
+            interfaceManagerReference.UpdateClipCount(currentClip_Shotgun);
+        }
+        else if (currentEquipWeaponReference == CurrentEquipWeapon.automatic)
+        {
+            guns[2].SetActive(true);
+            interfaceManagerReference.UpdateClipCount(currentClip_Automatic);
+            Debug.Log("currentClip_Automatic: " + currentClip_Automatic);
+        }
+    }
+
+    //public void setSecondary(bool hasPistol_)
+    //{
+    //    if (hasPistol_ == true)
+    //    {
+    //        showPistol();
+    //    }
+
+    //    hasPistol = true;
+    //}
+
+    //public void setPrimary()
+    //{
+    //    //For Shotgun
+    //    if (hasShotgun == true && hasAutomatic == false)
+    //    {
+    //        showShotgun();
+    //        hasPistol = false;
+    //    }
+
+    //    //For Automatic
+    //    if (hasAutomatic == true && hasShotgun == false)
+    //    {
+    //        showAutomatic();
+    //        hasPistol = false;
+    //    }
+    //}
 
     public void showPistol()
     {
@@ -193,15 +307,13 @@ public class Inventory : MonoBehaviour
             guns[i].SetActive(false);
         }
         guns[0].SetActive(true);
-        currentGun = guns[0];
-        currentWeaponIndex = 0;
 
         for (int i = 0; i < clipCountList.Length; i++)
         {
             clipCountList[i].SetActive(false);
         }
-        clipCount_Pistol.gameObject.SetActive(true);
-        clipCount_Pistol.text = currentClip.ToString();
+        //clipCount_Pistol.gameObject.SetActive(true);
+        //clipCount_Pistol.text = currentClip.ToString();
     }
 
     public void showShotgun()
@@ -211,16 +323,13 @@ public class Inventory : MonoBehaviour
             guns[i] = weaponHolder.transform.GetChild(i).gameObject;
             guns[i].SetActive(false);
         }
-        guns[1].SetActive(true);
-        currentGun = guns[1];
-        currentWeaponIndex = 1;
 
         for (int i = 0; i < clipCountList.Length; i++)
         {
             clipCountList[i].SetActive(false);
         }
-        clipCount_Shotgun.gameObject.SetActive(true);
-        clipCount_Shotgun.text = currentClip_Shotgun.ToString();
+        //clipCount_Shotgun.gameObject.SetActive(true);
+        //clipCount_Shotgun.text = currentClip_Shotgun.ToString();
 
     }
 
@@ -231,17 +340,14 @@ public class Inventory : MonoBehaviour
             guns[i] = weaponHolder.transform.GetChild(i).gameObject;
             guns[i].SetActive(false);
         }
-        guns[2].SetActive(true);
-        currentGun = guns[2];
-        currentWeaponIndex = 2;
 
         for (int i = 0; i < clipCountList.Length; i++)
         {
             clipCountList[i].SetActive(false);
         }
 
-        clipCount_Automatic.gameObject.SetActive(true);
-        clipCount_Automatic.text = currentClip_Automatic.ToString();
+        //clipCount_Automatic.gameObject.SetActive(true);
+        //clipCount_Automatic.text = currentClip_Automatic.ToString();
 
     }
 }

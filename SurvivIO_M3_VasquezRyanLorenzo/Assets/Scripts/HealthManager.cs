@@ -5,9 +5,10 @@ using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
-    public Image healthBar;
+    //public Image healthBar;
     public float healthAmount = 100;
     public static HealthManager instance;
+    public InterfaceManager interfaceManager;
     public GameObject player;
 
     private void Awake()
@@ -28,6 +29,6 @@ public class HealthManager : MonoBehaviour
     public void TakeDamage(int damage)
     {
         healthAmount -= damage;
-        healthBar.fillAmount = healthAmount / 100f;
+        interfaceManager.healthBar.fillAmount = healthAmount / 100f;
     }
 }

@@ -58,13 +58,13 @@ public class EnemyFSM : MonoBehaviour
     private float shootTimer_Shotgun = 0.6f;
     private float shootTimer_Automatic = 0.35f;
 
-    public HealthManager healthManager;
+    //public HealthManager healthManager;
     float patrolOffset = .5f;
     Vector2 targetPoint = Vector2.zero;
 
     private void Start()
     {
-        healthManager = HealthManager.instance.gameObject.GetComponent<HealthManager>();
+        //healthManager = HealthManager.instance.gameObject.GetComponent<HealthManager>();
         pistolAmmoLeft = 15;
         shotgunAmmoLeft = 2;
         automaticAmmoLeft = 30;

@@ -9,6 +9,8 @@ public class Shooting : MonoBehaviour
     public TextMeshProUGUI clip_Pistol;
     public TextMeshProUGUI clip_Shotgun;
     public TextMeshProUGUI clip_Automatic;
+    public InterfaceManager interfaceManagerReference;
+    public GameObject bulletPrefab;
 
     public float longPressDuration = 1f; // Duration in seconds for a long press
     private bool isPressed = false;
@@ -19,37 +21,31 @@ public class Shooting : MonoBehaviour
     [SerializeField] private Shotgun shotgun;
     [SerializeField] private Automatic automatic;
 
-
     // Start is called before the first frame update
     void Start()
     {
-        //mainCam = GameObject.FindGameObjectsWithTag("MainCamera").GetComponent<Camera>();
-
-        //clip_Pistol.text = currentClip_Pistol.ToString();
-        clip_Pistol.text = bulletInventory.GetComponent<Inventory>().currentClip.ToString();
-        clip_Shotgun.text = bulletInventory.GetComponent<Inventory>().currentClip_Shotgun.ToString();
-        clip_Automatic.text = bulletInventory.GetComponent<Inventory>().currentClip_Automatic.ToString();
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        //clip_Pistol.text = currentClip_Pistol.ToString();
-        //clip_Pistol.text = bulletInventory.GetComponent<Inventory>().currentClip.ToString();
-        //clip_Shotgun.text = bulletInventory.GetComponent<Inventory>().currentClip_Shotgun.ToString();
-        //clip_Automatic.text = bulletInventory.GetComponent<Inventory>().currentClip_Automatic.ToString();
-
-        if (isPressed)
+        if(isPressed)
         {
             Fire();
-            // Perform actions for long press here
-        }
+        } 
+
     }
 
-    public void test()
+    public void DownPress()
     {
-        Debug.Log("DSs");
+        isPressed = true;
+    }
+
+    public void UpPress()
+    {
+        isPressed = false;
+
     }
 
     private IEnumerator FireContinuously()
@@ -63,22 +59,29 @@ public class Shooting : MonoBehaviour
 
     public void Fire()
     {
-        if (bulletInventory.GetComponent<Inventory>().hasPistol)
+        isPressed = true;
+
+        if (bulletInventory.GetComponent<Inventory>().currentEquipWeaponReference == CurrentEquipWeapon.pistol)
         {
-            Debug.Log("PistolFire");
             pistol.Fire(bulletInventory.GetComponent<Inventory>().currentClip);
+            interfaceManagerReference.UpdateClipCount(bulletInventory.GetComponent<Inventory>().currentClip);
+            bulletPrefab.GetComponent<BulletMovement>().damage = 10;
         }
 
-        if (bulletInventory.GetComponent<Inventory>().hasShotgun)
+        if (bulletInventory.GetComponent<Inventory>().currentEquipWeaponReference == CurrentEquipWeapon.shotgun)
         {
             Debug.Log("ShotgunFire");
             shotgun.Fire(bulletInventory.GetComponent<Inventory>().currentClip_Shotgun);
+            interfaceManagerReference.UpdateClipCount(bulletInventory.GetComponent<Inventory>().currentClip_Shotgun);
+            bulletPrefab.GetComponent<BulletMovement>().damage = 10;
         }
 
-        if (bulletInventory.GetComponent<Inventory>().hasAutomatic)
+        if (bulletInventory.GetComponent<Inventory>().currentEquipWeaponReference == CurrentEquipWeapon.automatic && isPressed == true)
         {
             Debug.Log("AutomaticFire");
             automatic.Fire(bulletInventory.GetComponent<Inventory>().currentClip_Automatic);
+            interfaceManagerReference.UpdateClipCount(bulletInventory.GetComponent<Inventory>().currentClip_Automatic);
+            bulletPrefab.GetComponent<BulletMovement>().damage = 15;
         }
     }
 

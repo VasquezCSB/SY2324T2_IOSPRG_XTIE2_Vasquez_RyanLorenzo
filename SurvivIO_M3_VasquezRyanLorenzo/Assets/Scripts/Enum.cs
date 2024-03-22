@@ -23,3 +23,11 @@ public enum EnemyTypes
     shotgunEnemy,
     automaticEnemy
 }
+
+public enum CurrentEquipWeapon
+{
+    unarmed,
+    pistol,
+    shotgun,
+    automatic
+}
