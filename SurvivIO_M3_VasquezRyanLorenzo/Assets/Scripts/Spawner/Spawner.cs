@@ -6,7 +6,6 @@ public class Spawner : MonoBehaviour
 {
     public GameObject[] ammoLoot;
     public GameObject[] gunLoot;
-    public GameObject[] objectLoot;
     public GameObject enemy;
     public GameObject playerTransform;
 
@@ -17,7 +16,11 @@ public class Spawner : MonoBehaviour
     public float spawnRadius = 100f; // The radius within which enemies can spawn around the player
     public float minDistanceFromPlayer = 10f; // The minimum distance enemies should spawn from the player
     public float minDistanceBetweenEnemies = 10f; // The minimum distance between spawned enemies
+
     public List<Transform> spawnedEnemies = new List<Transform>();
+    public List<GameObject> spawnedAmmo = new List<GameObject>();
+    public List<GameObject> spawnedWeapons = new List<GameObject>();
+
 
 
     //Coords for Spawning
@@ -38,22 +41,25 @@ public class Spawner : MonoBehaviour
 
             if (randomVar >= 0 && randomVar <= 2)
             {
-                GameObject spawnedObject = Instantiate(gunLoot[Random.Range(0, ammoLoot.Length)], _randPos, Quaternion.identity);
-                spawnedObject.transform.parent = this.transform;
-
+                SpawnGun();
             }
+
+            //For ammo
             else if (randomVar >= 3 && randomVar <= 9)
             {
-                
-                GameObject spawnedObject = Instantiate(ammoLoot[Random.Range(0, ammoLoot.Length)], _randPos, Quaternion.identity);
-                spawnedObject.transform.parent = this.transform;
+                SpawnAmmo();
             }
         }
 
         for (int i = 0; i <= totalEnemies - 1; i++)
         {
-            SpawnEnemy(); 
+            SpawnEnemy();
         }
+    }
+
+    private void Update()
+    {
+        StartCoroutine(CheckForNullObjects());
     }
 
     void SpawnEnemy()
@@ -76,5 +82,60 @@ public class Spawner : MonoBehaviour
         Transform newEnemy = spawnedEnemy.transform;
         spawnedEnemies.Add(newEnemy);
 
+    }
+
+    private void SpawnGun()
+    {
+        GameObject spawnedObject = Instantiate(gunLoot[Random.Range(0, ammoLoot.Length)], _randPos, Quaternion.identity);
+        spawnedObject.transform.parent = this.transform;
+        spawnedWeapons.Add(spawnedObject);
+    }
+    private void SpawnAmmo()
+    {
+        GameObject spawnedObject = Instantiate(ammoLoot[Random.Range(0, ammoLoot.Length)], _randPos, Quaternion.identity);
+        spawnedObject.transform.parent = this.transform;
+        spawnedAmmo.Add(spawnedObject);
+    }
+
+    private IEnumerator CheckForNullObjects()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5f); // Adjust the time interval as needed
+
+            // Check each object in the list
+            for (int i = 0; i < spawnedAmmo.Count; i++)
+            {
+                if (spawnedAmmo[i] == null)
+                {
+                    // Object is null, handle it (e.g., respawn or remove from the list)
+                    spawnedAmmo.RemoveAt(i);
+                    yield return new WaitForSeconds(1f);
+                    SpawnAmmo();
+                }
+            }
+
+            for (int i = 0; i < spawnedWeapons.Count; i++)
+            {
+                if (spawnedWeapons[i] == null)
+                {
+                    // Object is null, handle it (e.g., respawn or remove from the list)
+                    spawnedWeapons.RemoveAt(i);
+                    yield return new WaitForSeconds(1f);
+                    SpawnGun();
+                }
+            }
+
+            for (int i = 0; i < spawnedEnemies.Count; i++)
+            {
+                if (spawnedEnemies[i] == null)
+                {
+                    // Object is null, handle it (e.g., respawn or remove from the list)
+                    spawnedEnemies.RemoveAt(i);
+                    yield return new WaitForSeconds(1f);
+                    SpawnEnemy();
+                }
+            }
+        }
     }
 }

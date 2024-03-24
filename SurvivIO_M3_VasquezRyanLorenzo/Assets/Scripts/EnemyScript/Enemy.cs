@@ -16,11 +16,6 @@ public class Enemy : Unit
     {
         curHealth = maxHealth;
         RandomSpawn();
-
-        //curHealth = maxHealth;
-        Debug.Log("curHealth: " + curHealth);
-
-        
     }
 
     private void RandomSpawn()
@@ -50,7 +45,6 @@ public class Enemy : Unit
         {
             Destroy(collision.gameObject);
             this.GetComponent<HealthComponent>().TakeDamage(collision.gameObject.GetComponent<BulletMovement>().damage);
-            //EnemyDamage(collision.gameObject.GetComponent<BulletMovement>().damage);
         }
     }
 }

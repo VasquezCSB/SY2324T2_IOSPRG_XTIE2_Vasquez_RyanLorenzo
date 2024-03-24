@@ -53,7 +53,7 @@ MonoBehaviour:
   - {fileID: 382245396097003490, guid: a1b1da6449a25584ba7c993980be5250, type: 3}
   - {fileID: 145668909157689702, guid: bab0ff3d70de02d4d9d011e91fc1cdbd, type: 3}
   objectLoot: []
-  enemy: {fileID: 2615549418071070648, guid: bd2e41248e6c89b4aa4e28b86bf67275, type: 3}
+  enemy: {fileID: 8739384247874184577, guid: 283e0c13dcd8dc146ab3b824b29f4458, type: 3}
   playerTransform: {fileID: 8209068354027341444, guid: 3f94b5413e119dc45a93a7979a828ae5, type: 3}
   totalLootAmount: 10
   totalEnemies: 20
