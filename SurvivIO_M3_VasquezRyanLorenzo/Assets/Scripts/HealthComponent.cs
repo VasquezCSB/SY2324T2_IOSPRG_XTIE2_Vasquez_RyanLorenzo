@@ -44,13 +44,23 @@ public class HealthComponent : MonoBehaviour
 
     private void Die()
     {
-        if(enemyTypeVar == enemyType.enemy)
-        {
-            Destroy(this.gameObject);
-        } else
-        {
-            test = true;
-            //this.gameObject.SetActive(false);
-        }
+        Destroy(this.gameObject);
+
+        //if (enemyTypeVar == enemyType.enemy)
+        //{
+        //    Destroy(this.gameObject);
+        //} else
+        //{
+        //    test = true;
+        //    //this.gameObject.SetActive(false);
+        //}
     }
+
+    //private void OnTriggerStay2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.GetComponent<PlayerMovement>() != null)
+    //    {
+    //        collision.
+    //    }
+    //}
 }
